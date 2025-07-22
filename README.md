@@ -32,3 +32,9 @@ Note: This will use the default `problems.csv` file.
 ```
 
 Note: Check `problems.csv` for the CSV file format.
+
+### Custom Time Limit
+
+```bash
+./quiz -limit=60
+```
