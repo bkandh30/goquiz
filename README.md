@@ -20,6 +20,9 @@ go build -o quiz
 ./quiz
 ```
 
+Example:
+![Example Execution](image.png)
+
 Note: This will use the default `problems.csv` file.
 
 ### Custom CSV File
