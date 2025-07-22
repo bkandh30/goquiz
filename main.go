@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
+	"context"
 	"encoding/csv"
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -26,26 +29,32 @@ func main() {
 	}
 	problems := parseLines(lines)
 
-	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(*timeLimit)*time.Second)
+	defer cancel()
+
+	fmt.Print("Starting the quiz! You have %d seconds.\n", *timeLimit)
 
 	correct := 0
+	scanner := bufio.NewScanner(os.Stdin)
 
 problemloop:
 	for i, p := range problems {
 		fmt.Printf("Problem #%d: %s = \n", i+1, p.q)
-		answerCh := make(chan string)
+
+		answerCh := make(chan string, 1)
+
 		go func() {
-			var answer string
-			fmt.Scanf("%s\n", &answer)
-			answerCh <- answer
+			if scanner.Scan() {
+				answerCh <- strings.TrimSpace(scanner.Text())
+			}
 		}()
 
 		select {
-		case <-timer.C:
-			fmt.Println()
+		case <-ctx.Done():
+			fmt.Println("\nTime's up!")
 			break problemloop
 		case answer := <-answerCh:
-			if answer == p.a {
+			if strings.EqualFold(answer, p.a) {
 				correct++
 			}
 		}
