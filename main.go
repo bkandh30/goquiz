@@ -32,7 +32,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(*timeLimit)*time.Second)
 	defer cancel()
 
-	fmt.Print("Starting the quiz! You have %d seconds.\n", *timeLimit)
+	fmt.Printf("Starting the quiz! You have %d seconds.\n", *timeLimit)
 
 	correct := 0
 	scanner := bufio.NewScanner(os.Stdin)
