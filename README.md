@@ -1,1 +1,1 @@
-# goquiz
+# Go Quiz
